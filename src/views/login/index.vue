@@ -11,7 +11,7 @@
         <el-button style="float:right">发送验证码</el-button>
         </el-form-item>
         <el-form-item>
-            <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
+            <el-checkbox :value="true" style="margin-right:5px"></el-checkbox>我已阅读并同意<span>用户协议</span>和<span>隐私条款</span>
         </el-form-item>
         <el-form-item>
             <el-button style="width:100%" type="primary" @click="login()">登 录</el-button>
@@ -33,8 +33,8 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '18638000724',
+        code: '246810'
       },
       loginRules: {
         mobile: [
@@ -55,8 +55,15 @@ export default {
         if (valid) {
           // 提交登录
           this.$http
-            .post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
+            .post('authorizations', this.loginForm)
             .then(res => {
+              // sessionStorage BOM对象 全局对象,作用是保存数据
+              // 是有有效期的  当关闭浏览器后失效
+              // sessionStorage.setItem(key,value) 存储数据,value 字符串
+              // sessionStorage.getItem(key) 获取数据
+              // sessionStorage.removeItem(key)删除数据
+              // sessionStorage.clear()清空所有数据
+              window.sessionStorage.setItem('hm74', JSON.stringify(res.data.data))
               this.$router.push('/')
             })
             .catch(() => {
@@ -89,6 +96,9 @@ export default {
             width: 200px;
             margin: 10px auto;
         }
+    }
+    span{
+      color: #409EFF;
     }
 }
 
