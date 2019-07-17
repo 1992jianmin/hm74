@@ -15,14 +15,16 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道 :">
-          <el-select v-model="reqParams.channel_id" placeholder="所有频道">
+          <!-- <el-select v-model="reqParams.channel_id" placeholder="所有频道">
             <el-option
               v-for="item in channelOptions"
               :key="item.id"
               :label="item.name"
               :value="item.id"
             ></el-option>
-          </el-select>
+          </el-select> -->
+          <!-- :value="reqParams.channel_id"  @input="把改变的数据设置给reqParams.channel_id" -->
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="时间 :">
           <el-date-picker
@@ -101,8 +103,7 @@ export default {
         begin_pubdate: null,
         end_pubdate: null
       },
-      // 频道的选项数组
-      channelOptions: [{ name: 'web', id: 6 }],
+
       // 日期数据
       dateValues: [],
       // 文章列表数据
@@ -112,8 +113,8 @@ export default {
     }
   },
   created () {
-    // 获取频道数据
-    this.getChannelOptions()
+    // // 获取频道数据
+    // this.getChannelOptions()
     // 获取文章列表数据
     this.getArticles()
   },
@@ -152,15 +153,11 @@ export default {
       this.reqParams.begin_pubdate = values[0]
       this.reqParams.end_pubdate = values[1]
     },
-    // 获取频道数据
-    async getChannelOptions () {
-      const {
-        data: { data }
-      } = await this.$http.get('channels')
-      this.channelOptions = data.channels
-    },
-    // 获取文章列表数据
+
+    // 获取文件列表数据
     async getArticles () {
+      // post 传参  post('url',{参数对象})
+      // get 传参 get('url?key=value&....') get('url',{params:{参数对象}})
       const {
         data: { data }
       } = await this.$http.get('articles', { params: this.reqParams })
