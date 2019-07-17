@@ -1,12 +1,16 @@
 // 配置axios
 import axios from 'axios'
-
+import JSONBig from 'json-bigint'
 const instance = axios.create({
   //  配置对象  基础路径  头部信息
-  baseURL: 'http://ttapi.research.itcast.cn/mp/v1_0/'
+  baseURL: 'http://ttapi.research.itcast.cn/mp/v1_0/',
   //   headers: {
   // Authorization: 'Bearer ' + JSON.parse(window.sessionStorage.getItem('hm74')).token
-
+  transformResponse: [(data) => {
+    if (data) {
+      return JSONBig.parse(data)
+    }
+  }]
 //   }
 })
 // 请求拦截
@@ -26,7 +30,7 @@ instance.interceptors.request.use(config => {
 
 // 响应拦截器
 instance.interceptors.response.use(response => response, error => {
-  if (error.response.status === 401) {
+  if (error.response && error.response.status === 401) {
     location.hash = '#/login'
   }
   return Promise.reject(error)

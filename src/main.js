@@ -3,7 +3,9 @@ import App from './App.vue'
 import ELEMENT from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from '@/router'
+import components from '@/components'
 import axios from '@/api/axios'
+Vue.use(components)
 // 基准路径
 // axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // // tolen认证

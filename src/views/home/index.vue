@@ -5,7 +5,7 @@
       <el-menu
       router
          style="border-right:none"
-        default-active="1"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -51,15 +51,15 @@
               style="vertical-align: middle"
               width="30"
               height="30"
-              src="../../assets/images/avatar.jpg"
+              :src="avatar"
               alt
             />
-            <b style="vertical-align: middle; padding-left:5px">来了老弟</b>
+            <b style="vertical-align: middle; padding-left:5px">{{name}}</b>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click.native="setting()">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" @click.native="logout()">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -74,12 +74,26 @@
 export default {
   data () {
     return {
-      collapse: false
+      collapse: false,
+      avatar: '',
+      name: ''
     }
+  },
+  created () {
+    const user = JSON.parse(window.sessionStorage.getItem('hm74'))
+    this.avatar = user.photo
+    this.name = user.name
   },
   methods: {
     toggleMenu () {
       this.collapse = !this.collapse
+    },
+    setting () {
+      this.$router.push('/setting')
+    },
+    logout () {
+      window.sessionStorage.removeItem('hm74')
+      this.$router.push('/login')
     }
   }
 }
